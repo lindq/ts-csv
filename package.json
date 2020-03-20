@@ -1,0 +1,29 @@
+{
+  "name": "ts-csv",
+  "version": "1.0.0",
+  "description": "TypeScript CSV parser, based on the Python csv library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "ts-node node_modules/jasmine/bin/jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lindq/ts-csv.git"
+  },
+  "keywords": [
+    "typescript",
+    "csv"
+  ],
+  "author": "David Lindquist (david.lindquist@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lindq/ts-csv/issues"
+  },
+  "homepage": "https://github.com/lindq/ts-csv#readme",
+  "devDependencies": {
+    "@types/jasmine": "^3.5.9",
+    "jasmine": "^3.5.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
+  }
+}
