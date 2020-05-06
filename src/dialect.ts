@@ -1,20 +1,44 @@
 /** Quoting strategies for CSV fields containing special characters. */
 export enum Quoting {
+  /** Quotes only those fields containing special characters. */
   MINIMAL,
+  /** Quotes all fields. */
   ALL,
+  /**
+   * Quotes only non-numeric fields, and converts unquoted fields to numbers.
+   */
   NON_NUMERIC,
+  /**
+   * Never quotes fields when writing. Throws an error if a special
+   * character is encountered and `escapeChar` is not set.
+   */
   NONE,
 }
 
 /** Defines the properties of a particular dialect of CSV. */
 export interface Dialect {
+  /** Field separator character. */
   delimiter: string;
+  /**
+   * If true, an occurrence of `quoteChar` found inside a fields is doubled.
+   * Otherwise, it is prefixed with `escapeChar`. If false, and no `escapeChar`
+   * is set, an error is thrown when writing.
+   */
   doubleQuote: boolean;
+  /**
+   * Character used to escape `delimiter` when writing, if quoting is off and
+   * `doubleQuote` is false.
+   */
   escapeChar?: string;
+  /** Character(s) appended to lines when writing. */
   lineTerminator: string;
+  /** Character used to quote fields containing special characters. */
   quoteChar: string;
+  /** The quoting strategy used by this dialect. */
   quoting: Quoting;
+  /** If true, ignores whitespace immediately after `delimiter`. */
   skipInitialSpace: boolean;
+  /** If true, throw an error on bad input. */
   strict: boolean;
 }
 
