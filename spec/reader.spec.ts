@@ -254,7 +254,7 @@ describe('CSV Reader', () => {
       expect([...recordReader(csv, excel, {fields})]).toEqual(expected);
     });
 
-    it('should read extra values to default restkey', () => {
+    it('should read extra values to default restKey', () => {
       const csv = 'a,b,c\r\n1,2,3,4,5,6\r\n7,8,9,x,y';
       const expected = [
         {a: '1', b: '2', c: '3', undefined: ['4', '5', '6']},
@@ -263,17 +263,17 @@ describe('CSV Reader', () => {
       expect([...recordReader(csv)]).toEqual(expected);
     });
 
-    it('should read extra values to given restkey', () => {
+    it('should read extra values to given restKey', () => {
       const csv = 'a,b,c\r\n1,2,3,4,5,6\r\n7,8,9,x,y';
-      const restkey = '_rest';
+      const restKey = '_rest';
       const expected = [
         {a: '1', b: '2', c: '3', '_rest': ['4', '5', '6']},
         {a: '7', b: '8', c: '9', '_rest': ['x', 'y']},
       ];
-      expect([...recordReader(csv, excel, {restkey})]).toEqual(expected);
+      expect([...recordReader(csv, excel, {restKey})]).toEqual(expected);
     });
 
-    it('should read default restval into short rows', () => {
+    it('should read default restVal into short rows', () => {
       const csv = 'a,b,c,d,e,f\r\n1,2,3\n4,5,6';
       const expected = [
         {a: '1', b: '2', c: '3', d: '', e: '', f: ''},
@@ -282,14 +282,14 @@ describe('CSV Reader', () => {
       expect([...recordReader(csv)]).toEqual(expected);
     });
 
-    it('should read given restval into short rows', () => {
+    it('should read given restVal into short rows', () => {
       const csv = 'a,b,c,d,e,f\r\n1,2,3\n4,5,6';
-      const restval = '\0';
+      const restVal = '\0';
       const expected = [
         {a: '1', b: '2', c: '3', d: '\0', e: '\0', f: '\0'},
         {a: '4', b: '5', c: '6', d: '\0', e: '\0', f: '\0'},
       ];
-      expect([...recordReader(csv, excel, {restval})]).toEqual(expected);
+      expect([...recordReader(csv, excel, {restVal})]).toEqual(expected);
     });
   });
 });

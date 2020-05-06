@@ -47,12 +47,12 @@ interface ReaderOpts {
    * Key to use for records in the event the number of values read from a row
    * exceeds the number of header fields.
    */
-  restkey?: string;
+  restKey?: string;
   /**
    * Value to use for records in the event the number of header fields exceeds
    * the number of values read from a row.
    */
-  restval?: Field;
+  restVal?: Field;
 }
 
 /**
@@ -70,8 +70,8 @@ interface ReaderOpts {
  *   //             {'header 1': 'bar', 'header 2': 'qux'}]
  *
  * If the number of header fields differs from the number of values read from a
- * given row, either a `restkey` or a `restval` is used to prevent the loss of
- * data. A `restkey` is used to gather extra values into an array. A `restval`
+ * given row, either a `restKey` or a `restVal` is used to prevent the loss of
+ * data. A `restKey` is used to gather extra values into an array. A `restVal`
  * is used to provide a default value for missing columns. Both can be
  * customized. See `ReaderOpts` above.
  */
@@ -93,15 +93,15 @@ export function*
       const lh = headers.length;
       const lr = row.length;
       if (lh < lr) {
-        // Extra values gathered into an array assigned to restkey.
+        // Extra values gathered into an array assigned to restKey.
         yield Object.fromEntries(zip(
-            [...headers, opts.restkey], [...row.slice(0, lh), row.slice(lh)]));
+            [...headers, opts.restKey], [...row.slice(0, lh), row.slice(lh)]));
         continue;
       } else if (lh > lr) {
-        // Extends row to match headers count and fills with restval.
-        const restval = opts.restval === undefined ? '' : opts.restval;
+        // Extends row to match headers count and fills with restVal.
+        const restVal = opts.restVal === undefined ? '' : opts.restVal;
         row.length = lh;
-        row.fill(restval, lr);
+        row.fill(restVal, lr);
       }
       yield Object.fromEntries(zip(headers, row));
     }
