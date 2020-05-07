@@ -5,7 +5,7 @@ describe('CSV Reader', () => {
   function readTest(
       source: string, expected: Row[], dialectOptions?: Partial<Dialect>) {
     const dialect = {...excel, ...dialectOptions};
-    expect([...reader(source, dialect)]).toEqual(expected);
+    expect([...reader(source, {dialect})]).toEqual(expected);
   }
 
   it('should be an iterator', () => {
@@ -237,7 +237,7 @@ describe('CSV Reader', () => {
         {a: '1', c: '2', e: '3'},
         {a: '4', c: '5', e: '6'},
       ];
-      expect([...recordReader(csv, excel, {fields})]).toEqual(expected);
+      expect([...recordReader(csv, {fields})]).toEqual(expected);
     });
 
     it('should return an empty array when no data', () => {
@@ -251,7 +251,7 @@ describe('CSV Reader', () => {
         {a: 'x', b: 'y', c: 'z'},
         {a: '1', b: '2', c: '3'},
       ];
-      expect([...recordReader(csv, excel, {fields})]).toEqual(expected);
+      expect([...recordReader(csv, {fields})]).toEqual(expected);
     });
 
     it('should read extra values to default restKey', () => {
@@ -270,7 +270,7 @@ describe('CSV Reader', () => {
         {a: '1', b: '2', c: '3', '_rest': ['4', '5', '6']},
         {a: '7', b: '8', c: '9', '_rest': ['x', 'y']},
       ];
-      expect([...recordReader(csv, excel, {restKey})]).toEqual(expected);
+      expect([...recordReader(csv, {restKey})]).toEqual(expected);
     });
 
     it('should read default restVal into short rows', () => {
@@ -289,7 +289,7 @@ describe('CSV Reader', () => {
         {a: '1', b: '2', c: '3', d: '\0', e: '\0', f: '\0'},
         {a: '4', b: '5', c: '6', d: '\0', e: '\0', f: '\0'},
       ];
-      expect([...recordReader(csv, excel, {restVal})]).toEqual(expected);
+      expect([...recordReader(csv, {restVal})]).toEqual(expected);
     });
   });
 });

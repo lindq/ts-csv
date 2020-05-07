@@ -18,6 +18,11 @@ enum ParserState {
   AFTER_ESCAPED_CRLF,
 }
 
+/** Options for the reader. */
+interface ReaderOpts {
+  dialect?: Dialect;
+}
+
 /**
  * CSV reader.
  *
@@ -29,15 +34,15 @@ enum ParserState {
  *   const parsed = [...reader(csv)];
  *   // parsed === [['header 1', 'header 2'], ['foo', 'bar'], ['baz', 'qux']]
  */
-export function* reader(csv: string, dialect = excel) {
-  const reader = new Reader(csv, dialect);
+export function* reader(source: string, opts: ReaderOpts = {}) {
+  const reader = new Reader(source, opts.dialect);
   for (const row of reader) {
     yield row;
   }
 }
 
-/** Options for reading CSV key-value pairs. */
-interface ReaderOpts {
+/** Options for the recordReader. */
+interface RecordReaderOpts extends ReaderOpts {
   /**
    * Field names to use as record keys. If omitted or empty, use values read
    * from the first row.
@@ -73,11 +78,10 @@ interface ReaderOpts {
  * given row, either a `restKey` or a `restVal` is used to prevent the loss of
  * data. A `restKey` is used to gather extra values into an array. A `restVal`
  * is used to provide a default value for missing columns. Both can be
- * customized. See `ReaderOpts` above.
+ * customized. See `RecordReaderOpts` above.
  */
-export function*
-    recordReader(csv: string, dialect = excel, opts: ReaderOpts = {}) {
-  const reader = new Reader(csv, dialect);
+export function* recordReader(source: string, opts: RecordReaderOpts = {}) {
+  const reader = new Reader(source, opts.dialect);
   const headers = opts.fields || reader.next().value || [];
   for (const row of reader) {
     if (row.length) {
@@ -108,12 +112,12 @@ export class Reader implements IterableIterator<Row> {
   private state = ParserState.START_RECORD;
   lineNum = 0;
 
-  constructor(
-      csv: string,
-      readonly dialect: Dialect = excel,
-  ) {
-    if (csv.length && !csv.endsWith('\n')) csv += '\n';
-    const lines = [...splitLines(csv)].map(line => line.replace(/\r\n$/, '\n'));
+  constructor(source: string, readonly dialect = excel) {
+    if (source.length && !source.endsWith('\n')) {
+      source += '\n';
+    }
+    const lines =
+        [...splitLines(source)].map(line => line.replace(/\r\n$/, '\n'));
     this.lines = new HasNextIterator<string>(lines);
   }
 

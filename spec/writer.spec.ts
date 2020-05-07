@@ -10,7 +10,7 @@ describe('CSV Writer', () => {
   function writeRowsTest(
       rows: Row[], expected: string, dialectOptions?: Partial<Dialect>) {
     const dialect = {...excel, ...dialectOptions};
-    const csv = [...writer(rows, dialect)].join('');
+    const csv = [...writer(rows, {dialect})].join('');
     expect(csv).toEqual(expected);
   }
 
@@ -123,15 +123,17 @@ describe('CSV Writer', () => {
         {first: 'C', second: 'D'},
         {first: 'E', second: 'F'},
       ];
+      const fields = ['second', 'first'];
       const expected = 'second,first\r\nB,A\r\nD,C\r\nF,E\r\n';
-      const csv = [...recordWriter(rows, ['second', 'first'])].join('');
+      const csv = [...recordWriter(rows, {fields})].join('');
       expect(csv).toEqual(expected);
     });
 
     it('should write empty strings for missing fields', () => {
       const rows = [{first: 'A', second: 'B'}, {second: 'D'}, {first: 'E'}];
+      const fields = ['first', 'second'];
       const expected = 'first,second\r\nA,B\r\n,D\r\nE,\r\n';
-      const csv = [...recordWriter(rows, ['first', 'second'])].join('');
+      const csv = [...recordWriter(rows, {fields})].join('');
       expect(csv).toEqual(expected);
     });
   });
