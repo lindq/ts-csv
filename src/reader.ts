@@ -78,16 +78,7 @@ interface ReaderOpts {
 export function*
     recordReader(csv: string, dialect = excel, opts: ReaderOpts = {}) {
   const reader = new Reader(csv, dialect);
-  let headers: Row;
-  if (opts.fields) {
-    headers = opts.fields;
-  } else {
-    const {value, done} = reader.next();
-    if (done) {
-      return [];
-    }
-    headers = value;
-  }
+  const headers = opts.fields || reader.next().value || [];
   for (const row of reader) {
     if (row.length) {
       const lh = headers.length;
